@@ -16,8 +16,7 @@ let get_points nr_points  =
         _get_points (nr_points - 1) ({x=List.nth floats 0;y=List.nth floats 1}::acc) 
         in _get_points nr_points []
 
-(*let points = get_points nr_points;;*)
-
+(*shoelace algorithm*)
 let calc_perim points =
         let first_point = List.nth points 0 in
         let rec _calc_perim points sum p1 = match points with
