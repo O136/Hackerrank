@@ -5,8 +5,7 @@ import Control.Monad
 main = do
   t <- readLn :: IO Int
   forM_ [1..t] (\_ -> do
-    [_, f] <- readInts
-    ns <- readInts
+    [_, f] <- readInts; ns <- readInts
     putStrLn $ list2String $ (takeByFreq f $ groupSorted $ processInput ns))
 
 list2String = unwords . map show
@@ -20,8 +19,7 @@ groupSorted (x:xs) = (fst $ head m, length m, snd $ minimumBy (compare `on` snd)
 
 check x = if x == [] then [-1] else x
 
-fst' (x,_,_) = x --(el, elFreq, elInitPos)
-snd' (_,x,_) = x
-thd' (_,_,x) = x
+--(el, elFreq, elInitPos)
+fst' (x,_,_) = x ; snd' (_,x,_) = x; thd' (_,_,x) = x
 
 takeByFreq n x = check $ map fst' (sortBy (compare `on` thd') $ filter ((n <=) . snd') x)
