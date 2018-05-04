@@ -2,7 +2,7 @@ module Glushkov where
 
 import Prelude hiding (last)
 
---If we see epsilon in regex pattern it will be Letter (_, 'eps')
+--If we see epsilon in regex pattern it will be Letter (_, 'eps'), so Epsilon cons has a role of more like Nil
 data Node = Epsilon | Letter (Int, Char) | Star Node | Concat(Node, Node) | Or(Node, Node) deriving (Show, Eq)
 initial = Letter (-1, '@')
 
