@@ -6,9 +6,9 @@ import Data.List (find)
 --given a regex tree and a word, returns whether word is accepted or not
 --it builds the automaton on the fly as needed
 automaton :: Node -> String -> Bool
-automaton reg word = automaton' reg word [initial] where
-  automaton' reg []     fin   = or $ map (\s-> isJust $ find (==s) fin) (accept reg)
-  automaton' reg (l:ls) nsts = automaton' reg ls nsts' where
+automaton reg word = auto' reg word [initial] where
+  auto' reg []     fin   = or $ map (\s-> isJust $ find (==s) fin) (accept reg)
+  auto' reg (l:ls) nsts = auto' reg ls nsts' where
     nsts' = filter (\(Letter(_, l')) -> l' == l)
                (concatMap (\s -> if s == initial then first reg
                                  else next reg s) nsts)
