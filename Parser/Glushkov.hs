@@ -25,7 +25,7 @@ first e = case e of
 next :: Node -> Node -> [Node]
 next e leaf = next e leaf [] where
   next e leaf acc = case e of
-    Concat(r1, r2) -> next r1 leaf (r1') ++ next r2 leaf acc where
+    Concat(r1, r2) -> next r1 leaf r1' ++ next r2 leaf acc where
       r1' = if empty r2 then first r2 ++ acc else first r2
     Or(r1, r2) -> next r1 leaf acc ++ next r2 leaf acc
     Star r1 -> next r1 leaf (first r1 ++ acc)
@@ -43,8 +43,3 @@ last e = case e of
 
 accept :: Node -> [Node]
 accept t = if not (empty t) then last t else initial : last t
-
---2 possibilites for the signature of next
---next :: Node -> (Letter Char) -> [Node] or next :: Node -> [(Node, [Node])] (generally more efficient)
---1st one will take the tree and the leaf for which the next states/nodes will be returned
---2nd one will take the tree and will return (stateX, [states reachable from stateX])
