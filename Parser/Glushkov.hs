@@ -1,10 +1,9 @@
 module Glushkov where
-
 import Prelude hiding (last)
 
 --If we see epsilon in regex pattern it will be Letter (_, 'eps')
 data Node = Epsilon | Letter (Int, Char) | Star Node | Concat(Node, Node) | Or(Node, Node) deriving (Show, Eq)
-initial = Letter (-1, '@')
+initial = Letter (-1, '&')
 
 empty :: Node -> Bool
 empty e = case e of
