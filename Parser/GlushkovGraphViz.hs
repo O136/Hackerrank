@@ -7,7 +7,7 @@ import Data.List (find)
 --it builds the automaton on the fly as needed
 automaton :: Node -> String -> Bool
 automaton reg word = automaton' reg word [initial] where
-  automaton' reg []     acc     = or $ map (\s-> isJust $ find (==s) acc) (accept reg)
+  automaton' reg []     finish   = or $ map (\s-> isJust $ find (==s) finish) (accept reg)
   automaton' reg (l:ls) nstates = automaton' reg ls nstates' where
     nstates' = filter (\(Letter(_, l')) -> l' == l)
                (concatMap (\s -> if s == initial then first reg
