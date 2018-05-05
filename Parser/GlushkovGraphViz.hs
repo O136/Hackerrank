@@ -32,14 +32,3 @@ node [shape=doublecircle];
 node [shape=circle];
 -}
 
-{-
---with the Berry-Sethi approach, we always have 1 starting state
-automaton2 :: Node -> String -> Bool
-automaton2 reg word = automaton' reg word (first reg) where
-  cmpLetter l = filter (\(Letter(_, l')) -> l' == l) --acc
-  automaton' reg []     acc = or $ map (\s-> isJust $ find (==s) acc) (accept reg)
-  automaton' reg (l:[]) acc = automaton' reg [] (cmpLetter l acc)
-  automaton' reg (l:ls) nstates =
-      let nstates' = concatMap (next reg) (cmpLetter l nstates) in
-        automaton' reg ls nstates'
--}

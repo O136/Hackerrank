@@ -32,7 +32,7 @@ next e leaf = next e leaf [] where
     x@(Letter _) -> if leaf == x then acc else []
     Epsilon -> []
 
---returns all the states which are accept states
+--returns all the states which are accept states without the initial state
 last :: Node -> [Node]
 last e = case e of
   Concat(r1, r2) -> if empty r2 then last r1 ++ last r2 else last r2
@@ -41,5 +41,6 @@ last e = case e of
   x@(Letter _) -> [x]
   Epsilon -> []
 
+--returns all the states which are accept states, taking in account if initial state is empty
 accept :: Node -> [Node]
 accept t = if not (empty t) then last t else initial : last t
