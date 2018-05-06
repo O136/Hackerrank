@@ -55,7 +55,3 @@ findH' sk p q = if distPL c p q < 0.0001 then curRes else c:curRes where
 
 rests pt0 ps = sortBy (compare `on` compkey pt0) ps where
         compkey (x0, y0) (x, y) = (atan2 (y - y0) (x - x0), abs (x - x0))
-
-s = [(1, 1),(2, 5),(3, 3),(5, 3),(3, 2),(2, 2)]
-toDouble ls = map (\(a,b) -> (fromInteger a ::Double,fromInteger b :: Double)) ls
-square = toDouble [(1,1),(1,10),(5,10),(5,1),(5,7),(5,8),(5,9),(2,10),(4,1)]
