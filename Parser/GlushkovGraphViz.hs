@@ -8,7 +8,7 @@ import Glushkov
 --given a regex tree and a word, returns whether word is accepted or not
 isValid :: RegT -> String -> Bool
 isValid t word = isValid' t word [initS] where
-    isValid' t [] fin      = or $ map (\s -> isJust $ find (== s) fin) (acceptS t)
+    isValid' t []     fin  = or $ map (\s -> isJust $ find (== s) fin) (acceptS t)
     isValid' t (l:ls) nsts = isValid' t ls nsts' where
         nsts' = filter (\(Letter (_, l')) -> l' == l)
                        (concatMap (\s -> if s == initS then firstS t
