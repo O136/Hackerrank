@@ -26,8 +26,8 @@ isValid t word = isValid' t word [initS]
 regEx :: RegT
 regEx =
   Concat
-    ( Star (Or (Letter (0, 'a'), Letter (1, 'b'))),
-      Concat (Letter (2, 'a'), Or (Letter (3, 'a'), Letter (4, 'b'))))
+    ( Star (Or (Letter (0, 'a'), Letter (1, 'b')))
+    , Concat (Letter (2, 'a'), Or (Letter (3, 'a'), Letter (4, 'b'))))
 
 --(a)*
 regEx2 :: RegT
