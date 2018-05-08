@@ -6,6 +6,8 @@ import Glushkov
 type StateOfStates = [RegT]
 
 --TODO: maybe check first if the word is valid and only then return a path ?
+--because otherwise only the successfully passed states will be yielded
+
 --returns the path travelled by the word in the automaton as a list of states
 automatonPath :: RegT -> String -> [StateOfStates]
 automatonPath t word = [initS] : path t word [initS]
@@ -26,15 +28,16 @@ automatonPath t word = [initS] : path t word [initS]
 --returns itself if the StateOfStates is qualified as an accept state
 --TODO: returning a Maybe StateOfStates only made code uglier
 maybeAcceptS :: RegT -> StateOfStates -> StateOfStates
-maybeAcceptS t sOfs =
-  if or (map (\trueAcceptS -> elem trueAcceptS sOfs) $ acceptS t)
-    then sOfs
+maybeAcceptS t s =
+  if or (map (\trueAcceptS -> elem trueAcceptS s) $ acceptS t)
+    then s
     else []
 
 --identifier of a state/(letter leaf)
 state2Str :: StateOfStates -> String
-state2Str state =
-  "\"{" ++ tail $ concatMap (\(Letter (i, _)) -> ',' : show i ++ "}\"") state
+state2Str [] = ""
+state2Str s =
+  "\"{" ++ tail ((concatMap (\(Letter (i, _)) -> ',' : show i) s) ++ "}\"")
 
 trans2Str :: (StateOfStates, StateOfStates) -> String
 trans2Str (s, s'@(Letter (_, l):_)) =
