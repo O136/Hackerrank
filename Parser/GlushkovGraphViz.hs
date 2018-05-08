@@ -3,14 +3,17 @@ module GlushkovGraphViz where
 import Data.List (find, nub)
 import Glushkov
 
+type StateOfStates = [RegT]
+
+--TODO: maybe check first if the word is valid and only then return a path ?
 --returns the path travelled by the word in the automaton as a list of states
-automaton :: RegT -> String -> [[RegT]]
-automaton t word = auto' t word [initS]
+automatonPath :: RegT -> String -> [StateOfStates]
+automatonPath t word = [initS] : path t word [initS]
   where
-    auto' t [] _ = []
-    auto' t (l:ls) nsts = nsts' : auto' t ls nsts'
+    path t [] _ = []
+    path t (l:ls) nextStates = nextStates' : (path t ls nextStates')
       where
-        nsts' =
+        nextStates' =
           filter
             (\(Letter (_, l')) -> l' == l)
             (concatMap
@@ -18,48 +21,38 @@ automaton t word = auto' t word [initS]
                   if s == initS
                     then firstS t
                     else nextS t s)
-               nsts)
+               nextStates)
 
-
---need new name
-acceptSDFA :: RegT -> [RegT] -> [RegT]
-acceptSDFA t states =
-  if foldl (\acc s -> acc || any (== s) states) False (lastS t)
-    then states
+--returns itself if the StateOfStates is qualified as an accept state
+--TODO: returning a Maybe StateOfStates only made code uglier
+maybeAcceptS :: RegT -> StateOfStates -> StateOfStates
+maybeAcceptS t sOfs =
+  if or (map (\trueAcceptS -> elem trueAcceptS sOfs) $ acceptS t)
+    then sOfs
     else []
 
+--identifier of a state/(letter leaf)
+state2Str :: StateOfStates -> String
+state2Str state =
+  "\"{" ++ tail $ concatMap (\(Letter (i, _)) -> ',' : show i ++ "}\"") state
 
---print identifier of a state
-printS :: [RegT] -> String
-printS []                 = ""
-printS [Letter (i, _)]    = show i
-printS (Letter (i, _):ss) = show i ++ "," ++ printS ss
+trans2Str :: (StateOfStates, StateOfStates) -> String
+trans2Str (s, s'@(Letter (_, l):_)) =
+  state2Str s ++ "->" ++ state2Str s' ++ " [label=\"" ++ show l ++ "\"]"
+trans2Str _ = ""
 
-
---print transition between 2 states, how about empty lists ?
-printT :: ([RegT], [RegT]) -> String
-printT (s, s'@(Letter (_, l):_)) =
-  "\"{" ++ printS s ++ "}\"->\"{" ++ printS s' ++ "}\" [label=\"" ++ show l ++ "\"]"
-printT _ = ""
-
-
---print transitions created by the word
-printAutomaton :: RegT -> String -> String
-printAutomaton t word =
-  let a = automaton t word
-      trans = zip ([initS] : a) a
-  in "digraph nfa {\n\
-     \rankdir=LR; node [shape=none,width=0,height=0,margin=0]; start [label=\"\"];\n\
-     \node [shape=doublecircle];"  ++
-      show (nub $ (foldl (\acc n -> let x = acceptSDFA t n in
-                            if null x
-                            then []
-                            else (x:acc)) [] a)) ++
+--given a word it creates the repr. for a graphViz automaton
+graphVizAutomaton :: RegT -> String -> String
+graphVizAutomaton t word =
+  let path = automatonPath t word
+      trans = nub $ zip path (tail path) --extract unique "edges"
+  in "\ndigraph nfa {\n\
+      \rankdir=LR; node [shape=none,width=0,height=0,margin=0]; start [label=\"\"];\n\
+      \node [shape=doublecircle];\n" ++
+     concatMap ((++ "\n") . state2Str) (nub (maybeAcceptS t <$> path)) ++
      "node [shape=circle];\n" ++
-     (foldl (\acc s -> acc ++ printT s ++ "\n") "" trans) ++
-     "start->\"{" ++ printS [initS] ++ "}\"\n" ++
-     "}"
-
+     concatMap ((++ "\n") . trans2Str) trans ++
+     "start->" ++ state2Str [initS] ++ "\n}"
 
 --(a|b)*a(a|b)
 regEx :: RegT
