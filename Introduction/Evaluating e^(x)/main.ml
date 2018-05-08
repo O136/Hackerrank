@@ -13,6 +13,3 @@ let _ =
         if n = 0 then List.fold_right (fun x () -> epow x; print_string "\n") acc ()
         else read (read_float():: acc) (n-1) 
     in read [] n
-    
-
-    
