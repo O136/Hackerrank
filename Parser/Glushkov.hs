@@ -1,7 +1,6 @@
 module Glushkov where
-import Data.List
 
---If we see epsilon in regex pattern it will be Letter (_, 'eps'), so Epsilon cons has a role of more like Nil
+--If we se:e epsilon in regex pattern it will be Letter (_, 'eps'), so Epsilon cons has a role of more like Nil
 data RegT
   = Epsilon
   | Letter (Int, Char)
@@ -17,15 +16,13 @@ empty :: RegT -> Bool
 empty t =
   case t of
     Concat (l, r) -> empty l && empty r
-    Or (l, r)     -> empty l || empty r
-    Letter _      -> False
-    _             -> True
+    Or (l, r) -> empty l || empty r
+    Letter _ -> False
+    _ -> True
 
 --all the states that can be reached from the initS statef
-
 firstS :: RegT -> [RegT]
 firstS t =
-  find 
   case t of
     Or (r1, r2) -> firstS r1 ++ firstS r2
     Concat (r1, r2) ->
