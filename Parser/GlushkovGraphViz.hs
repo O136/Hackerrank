@@ -7,23 +7,18 @@ type StateOfStates = [RegT]
 
 --TODO: maybe check first if the word is valid and only then return a path ?
 --because otherwise only the successfully passed states will be yielded
-
 --returns the path travelled by the word in the automaton as a list of states
 automatonPath :: RegT -> String -> [StateOfStates]
 automatonPath t word = [initS] : path t word [initS]
   where
+    filterByLetter l = filter (\(Letter (_, l')) -> l' == l)
     path t [] _ = []
-    path t (l:ls) nextStates = nextStates' : (path t ls nextStates')
+    path t (l:ls) (initS:[]) = next : path t ls next
       where
-        nextStates' =
-          filter
-            (\(Letter (_, l')) -> l' == l)
-            (concatMap
-               (\s ->
-                  if s == initS
-                    then firstS t
-                    else nextS t s)
-               nextStates)
+        next = filterByLetter l (firstS t)
+    path t (l:ls) next = next' : (path t ls next')
+      where
+        next' = filterByLetter l $ concatMap (\s -> nextS t s) next
 
 --returns itself if the StateOfStates is qualified as an accept state
 --TODO: returning a Maybe StateOfStates only made code uglier
@@ -48,7 +43,7 @@ trans2Str _ = ""
 graphVizAutomaton :: RegT -> String -> String
 graphVizAutomaton t word =
   let path = automatonPath t word
-      trans = nub $ zip path (tail path) --extract unique "edges"
+      trans = nub $ zip path (tail path) --extract unique "edges/transitions"
   in "\ndigraph nfa {\n\
       \rankdir=LR; node [shape=none,width=0,height=0,margin=0]; start [label=\"\"];\n\
       \node [shape=doublecircle];\n" ++
