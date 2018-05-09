@@ -18,7 +18,7 @@ automatonPath t word = [initS] : path t word [initS]
         next = filterByLetter l (firstS t)
     path t (l:ls) next = next' : (path t ls next')
       where
-        next' = filterByLetter l $ concatMap (\s -> nextS t s) next
+        next' = filterByLetter l $ concatMap (nextS t) next
 
 --returns itself if the StateOfStates is qualified as an accept state
 --TODO: returning a Maybe StateOfStates only made code uglier
