@@ -5,15 +5,11 @@ import (
 )
 
 /*
-Needed:
-	(int -> (int-> [pos_in_array]) map
-	int slice
-
 amortized O(1)
 On Insert method we compute the pos_in_array = len(array) + 1 and
 
 O(1)
-On GetRandom we generate a n = randomInt(0, len(slice) + 1), because it's non inclusive
+On GetRandom we generate a n = randomInt(0, len(slice)),
 and return slice[n]
 
 amortized O(1)
@@ -22,7 +18,6 @@ if pos of the deleted key is the last one we're done
 otherwise we use the pos_in_array to get to the value and
 swap it with the last one in the slice, then decrease the length of the slice
 and we have to update the position of the swapped key
-
 */
 
 type RandomizedCollection struct {
