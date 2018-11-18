@@ -4,7 +4,6 @@ import (
 	"fmt"
 )
 
-// Definition for singly-linked list.
 type ListNode struct {
 	Val  int
 	Next *ListNode
@@ -14,7 +13,7 @@ func reverseKGroup(head *ListNode, k int) *ListNode {
 	cur := head
 	i := 0
 
-	// reach for the k+1th node
+	//reach for the k+1th node
 	//in order to break the list into 2 parts
 	for ; cur != nil && i != k; i++ {
 		cur = cur.Next
@@ -23,6 +22,7 @@ func reverseKGroup(head *ListNode, k int) *ListNode {
 	//if k + 1 node is found
 	if i == k {
 		cur = reverseKGroup(cur, k)
+		fmt.Println("cur is ", cur)
 
 		for ; i > 0; i-- {
 			tmp := head.Next
@@ -50,10 +50,14 @@ func main() {
 		Next: &ListNode{
 			Val: 2,
 			Next: &ListNode{
-				Val:  3,
-				Next: nil,
+				Val: 3,
+				Next: &ListNode{
+					Val:  4,
+					Next: nil,
+				},
 			},
 		},
 	}
-	printList(reverseKGroup(l, 3))
+	printList(l)
+	printList(reverseKGroup(l, 4))
 }

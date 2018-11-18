@@ -1,8 +1,4 @@
-package main
-
-import (
-	"fmt"
-)
+package leetcode
 
 func removeDuplicates(nums []int) int {
 	if len(nums) == 0 {
@@ -18,17 +14,4 @@ func removeDuplicates(nums []int) int {
 	}
 
 	return idx + 1
-}
-
-func main() {
-
-	// fmt.Println("count", removeDuplicates([]int{0, 1, 1, 1, 1, 2, 3, 4, 4, 4, 5}))
-	// fmt.Println("count", removeDuplicates([]int{0}))
-	// fmt.Println("count", removeDuplicates([]int{1, 1}))
-	// fmt.Println("count", removeDuplicates([]int{1, 2, 3, 3}))
-	// fmt.Println("count", removeDuplicates([]int{1, 1, 3, 3}))
-	// fmt.Println("count", removeDuplicates([]int{0, 1, 2}))
-	// fmt.Println("count", removeDuplicates([]int{0, 1, 1, 7, 8, 9, 9, 9}))
-	fmt.Println("count", removeDuplicates([]int{0, 1, 2, 3, 4, 4, 5, 5, 5, 5}))
-	fmt.Println("count", removeDuplicates([]int{0, 0, 0, 0, 1, 2, 3, 4, 4, 5, 5, 5, 5}))
 }
