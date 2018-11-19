@@ -23,11 +23,4 @@ class Solution:
             acc = [''.join([e1,e2]) for e1 in d[seq] for e2 in acc] 
             
         return list(acc)
-
 		
-
-
-s = Solution()
-print(s.pairwise(['a','b'],['c','d']))
-print(s.letterCombinations(""))
-print(s.letterCombinations("27"))
