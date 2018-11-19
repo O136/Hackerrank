@@ -28,7 +28,6 @@ func mergeKLists(lists []*ListNode) *ListNode {
 	head := tmp
 
 	//collect all values into a container
-	//will speed up building of heap, but will consume O(n) memory
 	c := make([]int, 0, 8000)
 	for _, l := range lists {
 		c = append(c, collectVals(l)...)

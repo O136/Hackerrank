@@ -2,6 +2,16 @@
     "configurations": [
         {
             "type": "java",
+            "name": "CodeLens (Launch) - Codec",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "console": "internalConsole",
+            "stopOnEntry": false,
+            "mainClass": "Codec",
+            "args": ""
+        },
+        {
+            "type": "java",
             "name": "CodeLens (Launch) - RandomizedCollection",
             "request": "launch",
             "cwd": "${workspaceFolder}",
